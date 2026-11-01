@@ -1,0 +1,73 @@
+{
+  "$comment": [
+    "OpenWA OCI Infra — A2A-reachable OpenCode agent for ai4xedu/openwa-oci-infra.",
+    "",
+    "This gives the co-resident OpenCode instance a real A2A server, so peers",
+    "(Hermes/omnizya-agent, Claude, a2abridge) can PUSH tasks to it instead of",
+    "only pulling. Port 4096 is the OpenCode server this wrapper drives.",
+    "",
+    "  ./start.sh start|stop|restart|status|logs|foreground"
+  ],
+
+  "agentCard": {
+    "name": "OpenWA OCI Infra Agent",
+    "description": "OpenCode agent scoped to the ai4xedu/openwa-oci-infra repository (WaaSel / OpenWA on OCI). Plans and implements Linux-operator infrastructure work: OCI Terraform/OpenTofu, Supabase migrations, Docker Compose stack, DNS, and the hexagonal SaaS BFF.",
+    "version": "1.0.0",
+    "protocolVersion": "0.3.0",
+    "defaultInputModes": ["text"],
+    "defaultOutputModes": ["text"],
+    "streaming": true,
+    "skills": [
+      {
+        "id": "infra-planning",
+        "name": "Infrastructure Planning",
+        "description": "Plan infrastructure changes for the OCI/Supabase/Docker stack without applying them",
+        "tags": ["terraform", "opentofu", "oci", "planning"]
+      },
+      {
+        "id": "repo-maintenance",
+        "name": "Repo Maintenance",
+        "description": "Edit scripts, workflows and docs in the openwa-oci-infra repository",
+        "tags": ["shell", "ci", "docs", "refactor"]
+      },
+      {
+        "id": "architecture",
+        "name": "Architecture Design",
+        "description": "Design the hexagonal BFF and multi-tenant tenancy model for the SaaS gateway",
+        "tags": ["hexagonal", "saas", "multi-tenant", "bff"]
+      }
+    ]
+  },
+
+  "server": {
+    "port": 3020,
+    "hostname": "127.0.0.1",
+    "advertiseHost": "localhost",
+    "advertiseProtocol": "http"
+  },
+
+  "opencode": {
+    "baseUrl": "http://localhost:4096",
+    "agent": "build",
+    "systemPromptMode": "replace"
+  },
+
+  "features": {
+    "autoApprovePermissions": true,
+    "autoAnswerQuestions": false,
+    "streamArtifactChunks": false,
+    "enablePollingFallback": true
+  },
+
+  "timeouts": {
+    "prompt": 900000,
+    "pollingInterval": 2000,
+    "healthCheck": 30000
+  },
+
+  "logging": {
+    "level": "info"
+  },
+
+  "mcp": {}
+}

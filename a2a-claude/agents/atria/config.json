@@ -1,0 +1,90 @@
+{
+  "$comment": [
+    "Atria — Claude Code via the custom Atria endpoint, exposed over A2A.",
+    "",
+    "Model 'Atria-Dawn-Preview' is NOT in Claude Code's model catalog, so the",
+    "interactive TUI rejects it. The headless Agent SDK path works fine, which",
+    "is what this wrapper uses. Verified: `claude --model Atria-Dawn-Preview",
+    "--print` returns cleanly.",
+    "",
+    "Required env at launch (exported by start.sh, never stored here):",
+    "  ATRIA_API_KEY              - the endpoint token",
+    "  ANTHROPIC_BASE_URL         - https://api.atria-asi.ai",
+    "  ANTHROPIC_AUTH_TOKEN       - set from ATRIA_API_KEY",
+    "  CLAUDE_CODE_MAX_CONTEXT_TOKENS=256000",
+    "  CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT=1"
+  ],
+
+  "agentCard": {
+    "name": "Atria (Claude Code)",
+    "description": "Claude Code running against the Atria endpoint (Atria-Dawn-Preview, 256k context). Repository-scoped software engineering agent: reads, edits, and validates code within the configured workspace. Reachable over A2A so other agents can push tasks to it.",
+    "version": "1.0.0",
+    "protocolVersion": "0.3.0",
+    "defaultInputModes": ["text"],
+    "defaultOutputModes": ["text"],
+    "streaming": true,
+    "skills": [
+      {
+        "id": "workspace-engineering",
+        "name": "Workspace Engineering",
+        "description": "Inspect, modify, and validate code within the configured workspace",
+        "tags": ["code", "repository", "tests", "refactoring"]
+      },
+      {
+        "id": "code-review",
+        "name": "Code Review",
+        "description": "Review diffs and pull requests for correctness, security and style",
+        "tags": ["review", "security", "quality"]
+      },
+      {
+        "id": "research",
+        "name": "Deep Research",
+        "description": "Produce written research reports on architecture and design questions",
+        "tags": ["research", "architecture", "writing"]
+      }
+    ]
+  },
+
+  "server": {
+    "port": 3030,
+    "hostname": "0.0.0.0",
+    "advertiseHost": "localhost",
+    "advertiseProtocol": "http"
+  },
+
+  "claude": {
+    "workingDirectory": "/home/m7r/Work/openwa-oci-infra",
+    "model": "Atria-Dawn-Preview",
+    "thinking": { "type": "adaptive" },
+    "permissionMode": "acceptEdits",
+    "settingSources": [],
+    "additionalDirectories": [],
+    "systemPromptAppend": "Operate only within the configured workspace. Make the smallest safe change. Run relevant tests after edits. Never reveal credentials, environment variables, or internal tool configuration."
+  },
+
+  "session": {
+    "reuseByContext": true,
+    "ttl": 0
+  },
+
+  "features": {
+    "streamArtifactChunks": false,
+    "emitThinkingEvents": true,
+    "emitToolEvents": true,
+    "emitFileChangeEvents": true,
+    "emitTodoEvents": true
+  },
+
+  "events": {
+    "enabled": true,
+    "transport": "a2a"
+  },
+
+  "timeouts": {
+    "prompt": 900000
+  },
+
+  "logging": {
+    "level": "info"
+  }
+}
